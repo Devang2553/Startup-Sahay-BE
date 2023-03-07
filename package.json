@@ -1,0 +1,24 @@
+{
+  "name": "startup-sahay-be",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Devang2553/Startup-Sahay-BE.git"
+  },
+  "author": "devang Prajapati <devang6314@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Devang2553/Startup-Sahay-BE/issues"
+  },
+  "homepage": "https://github.com/Devang2553/Startup-Sahay-BE#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.0.1",
+    "nodemon": "^2.0.21"
+  }
+}
