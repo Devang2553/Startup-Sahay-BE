@@ -48,6 +48,8 @@ class UserController {
         password: hashedPassword,
       });
 
+      console.log(user,'user');
+
       const token = jwt.sign({ email: user.email, id: user._id }, SECRET_KEY);
       // Save the user to the database
       await user.save();
