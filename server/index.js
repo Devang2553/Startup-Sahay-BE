@@ -1,14 +1,15 @@
-const bodyParser = require('body-parser');
-const express = require('express');
-const mongoose = require('mongoose');
-const usersRouter = require('./Routes/user');
+const bodyParser = require("body-parser");
+const express = require("express");
+const mongoose = require("mongoose");
+const usersRouter = require("./Routes/user");
+const cors = require("cors");
 
 const app = express();
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
-
 
 const connectDB = async () => {
   try {
@@ -20,12 +21,12 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.use('/users', usersRouter);
+app.use("/users", usersRouter);
 
+const tokenValidation = require("./Auth/LoginAuthStrategy");
+const passport = require("passport");
+passport.use(tokenValidation());
 
-
-
-
-app.listen(3004, "localhost", () => {
-  console.log("server started on port 3004 ");
+app.listen(3001, "localhost", () => {
+  console.log("server started on port 3001 ");
 });
