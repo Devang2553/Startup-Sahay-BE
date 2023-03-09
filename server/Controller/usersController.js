@@ -94,6 +94,8 @@ class UserController {
 
     res.status(200).json({ message: "Login successful", token });
   };
+  
+  
 }
 
 module.exports = UserController;
