@@ -2,6 +2,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
 const usersRouter = require("./Routes/user");
+const formRouter = require("./Routes/stepformRoute");
+
 const cors = require("cors");
 const passport = require("passport");
 const fbRoute = require("./Routes/fb");
@@ -59,6 +61,8 @@ const connectDB = async () => {
 connectDB();
 
 app.use("/users", usersRouter);
+app.use("/form", formRouter);
+
 
 const tokenValidation = require("./Auth/LoginAuthStrategy");
 
