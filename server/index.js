@@ -2,7 +2,11 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const mongoose = require("mongoose");
 const usersRouter = require("./Routes/user");
-const formRouter = require("./Routes/stepformRoute");
+// const formRouter = require("./Routes/stepformRoute");
+const step1Router = require("./Routes/stepone");
+const step2Router = require("./Routes/steptwo");
+
+
 const FacebookStrategy = require("passport-facebook").Strategy;
 const session = require("express-session");
 const flash = require("connect-flash");
@@ -62,7 +66,12 @@ const connectDB = async () => {
 connectDB();
 
 app.use("/users", usersRouter);
-app.use("/form", formRouter);
+// app.use("/form", formRouter);
+app.use("/step1", step1Router);
+app.use("/step2", step2Router);
+
+
+
 
 const tokenValidation = require("./Auth/LoginAuthStrategy");
 
