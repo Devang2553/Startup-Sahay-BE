@@ -5,6 +5,7 @@ const express = require("express");
 
 const bodyParser = require("body-parser");
 const { v4: uuidv4 } = require("uuid");
+const { default: mongoose } = require("mongoose");
 const id = uuidv4();
 
 const SECRET_KEY = "registerApi";
@@ -94,6 +95,26 @@ class UserController {
 
     res.status(200).json({ message: "Login successful", token });
   };
+  
+  static getData= async (req, res) => {
+
+    // if (mongoose.Types.ObjectId.isValid(id)) {
+    //     return res.status(400).json({ error: 'Invalid ID' });
+    //   }
+    // const {id,email}= req.params
+    try {
+      const user = await User.findById(req.params.id).select('name email');
+      console.log(user);
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error fetching user data');
+    }
+  }
+      
   
   
 }

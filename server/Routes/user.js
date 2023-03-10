@@ -9,8 +9,6 @@ const router = express.Router();
 
 router.post('/register', usersController.register);
 router.post('/login', usersController.login);
-router.get('/getdata' ,(req, res) => {
-    res.send("done")
-})
+router.get('/getData/:id',usersController.getData)
 
 module.exports = router;
