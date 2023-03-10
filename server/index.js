@@ -3,52 +3,53 @@ const express = require("express");
 const mongoose = require("mongoose");
 const usersRouter = require("./Routes/user");
 const formRouter = require("./Routes/stepformRoute");
+const FacebookStrategy = require("passport-facebook").Strategy;
+const session = require("express-session");
+const flash = require("connect-flash");
+const fbRoute = require("./Routes/fb");
 
 const cors = require("cors");
 const passport = require("passport");
-const fbRoute = require("./Routes/fb");
 const dotenv = require("dotenv");
 
 dotenv.config({
-    override: true,
-  });
+  override: true,
+});
 
 const app = express();
 app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 app.use(
-    require("express-session")({
-      secret: "secret key",
-      resave: false,
-      saveUninitialized: false,
-    })
-  );
+  session({
+    secret: "secret key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/api/auth", fbRoute);
+app.use("/api", fbRoute);
+
+passport.serializeUser((user, done) => {
+  console.log(user["_json"]);
+  done(
+    null,
+    user["_json"] || { id: user.id, username: user.username, name: user.name }
+  );
+});
+
+passport.deserializeUser((id, done) => {
+  process.nextTick(() => done(null, id));
+});
 
 const { facebookAuthenticate } = require("./auth/authStrategy");
 
 passport.use(facebookAuthenticate());
-
-passport.serializeUser((user, cb) => {
-  process.nextTick(() => {
-    console.log(user["_json"]);
-    cb(
-      null,
-      user["_json"] || { id: user.id, username: user.username, name: user.name }
-    );
-  });
-});
-
-passport.deserializeUser((user, cb) => {
-  process.nextTick(() => cb(null, user));
-});
 
 const connectDB = async () => {
   try {
@@ -62,7 +63,6 @@ connectDB();
 
 app.use("/users", usersRouter);
 app.use("/form", formRouter);
-
 
 const tokenValidation = require("./Auth/LoginAuthStrategy");
 
