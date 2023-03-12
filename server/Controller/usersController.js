@@ -49,7 +49,7 @@ class UserController {
         password: hashedPassword,
       });
 
-      console.log(user,'user');
+      console.log(user, "user");
 
       const token = jwt.sign({ email: user.email, id: user._id }, SECRET_KEY);
       // Save the user to the database
@@ -89,34 +89,31 @@ class UserController {
     // Update user info in database
     user.lastLogin = new Date();
     await user.save();
+    console.log(user);
 
     // Store token in local storage
     // localStorage.setItem('accessToken', token);
 
-    res.status(200).json({ message: "Login successful", token });
+    res.status(200).json({ message: "Login successful", token, user });
   };
-  
-  static getData= async (req, res) => {
 
+  static getData = async (req, res) => {
     // if (mongoose.Types.ObjectId.isValid(id)) {
     //     return res.status(400).json({ error: 'Invalid ID' });
     //   }
     // const {id,email}= req.params
     try {
-      const user = await User.findById(req.params.id).select('name email');
+      const user = await User.findById(req.params.id).select("name email");
       console.log(user);
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send("User not found");
       }
       res.status(200).json(user);
     } catch (error) {
       console.error(error);
-      res.status(500).send('Error fetching user data');
+      res.status(500).send("Error fetching user data");
     }
-  }
-      
-  
-  
+  };
 }
 
 module.exports = UserController;
