@@ -6,11 +6,11 @@ const usersRouter = require("./Routes/user");
 const step1Router = require("./Routes/stepone");
 const step2Router = require("./Routes/steptwo");
 
-
-const FacebookStrategy = require("passport-facebook").Strategy;
+// const FacebookStrategy = require("passport-facebook").Strategy;
 const session = require("express-session");
-const flash = require("connect-flash");
-const fbRoute = require("./Routes/fb");
+// const flash = require("connect-flash");
+// const fbRoute = require("./Routes/fb");
+const { facebookAuthenticate } = require("./fb");
 
 const cors = require("cors");
 const passport = require("passport");
@@ -37,23 +37,49 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use("/api", fbRoute);
+// app.use("/api", fbRoute);
 
 passport.serializeUser((user, done) => {
-  console.log(user["_json"]);
-  done(
-    null,
-    user["_json"] || { id: user.id, username: user.username, name: user.name }
-  );
+  done(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-  process.nextTick(() => done(null, id));
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err);
+  }
 });
 
-const { facebookAuthenticate } = require("./auth/authStrategy");
+app.get(
+  "/auth/facebook",
+  passport.authenticate("facebook", { scope: ["email"] })
+);
 
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", {
+    successRedirect: "http://localhost:3000/DashBoard",
+  })
+);
 passport.use(facebookAuthenticate());
+
+// passport.serializeUser((user, done) => {
+//   console.log(user["_json"]);
+//   done(
+//     null,
+//     user["_json"] || { id: user.id, username: user.username, name: user.name }
+//   );
+// });
+
+// passport.deserializeUser((id, done) => {
+//   process.nextTick(() => done(null, id));
+// });
+
+// const { facebookAuthenticate } = require("./auth/authStrategy");
+
+// passport.use(facebookAuthenticate());
 
 const connectDB = async () => {
   try {
@@ -69,9 +95,6 @@ app.use("/users", usersRouter);
 // app.use("/form", formRouter);
 app.use("/step1", step1Router);
 app.use("/step2", step2Router);
-
-
-
 
 const tokenValidation = require("./Auth/LoginAuthStrategy");
 
