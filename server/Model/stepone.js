@@ -15,6 +15,7 @@ const formSchema1 = new mongoose.Schema({
   stage: [String],
   structure: String,
   pitch:String,
+  userId:String
 
 
 

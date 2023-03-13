@@ -54,7 +54,7 @@ class UserController {
       const token = jwt.sign({ email: user.email, id: user._id }, SECRET_KEY);
       // Save the user to the database
       await user.save();
-      return res.status(201).json({
+       res.status(201).json({
         user: user,
         token: token,
         message: "User registered successfully",
@@ -94,7 +94,7 @@ class UserController {
     // Store token in local storage
     // localStorage.setItem('accessToken', token);
 
-    res.status(200).json({ message: "Login successful", token, user });
+    res.status(200).json({ message: "Login successful", token, user, });
   };
 
   static getData = async (req, res) => {

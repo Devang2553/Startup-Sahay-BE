@@ -25,7 +25,8 @@ class StepformController1 {
       generateRevenue:req.body.generateRevenue,
       stage:req.body.stage,
       structure:req.body.structure,
-      pitch:req.body.pitch,      // Assign additional fields here for all 14 steps of the stepper form
+      pitch:req.body.pitch,
+      userId:req.body.userId,      // Assign additional fields here for all 14 steps of the stepper form
     });
     console.log(req.body);
 
@@ -44,8 +45,10 @@ class StepformController1 {
     //     return res.status(400).json({ error: 'Invalid ID' });
     //   }
     // const {id,email}= req.params
+
     try {
-      const user = await Stepform1.findById(req.params.id);
+
+      const user = await Stepform1.findOne({userId:req.body.userId});
       console.log(user);
       if (!user) {
         return res.status(404).send("User not found");
