@@ -12,7 +12,7 @@ const formSchema1 = new mongoose.Schema({
   country: String,
   available: String,
   generateRevenue: String,
-  stage: String,
+  stage: [String],
   structure: String,
   pitch:String,
 

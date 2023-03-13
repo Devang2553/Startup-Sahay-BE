@@ -39,15 +39,23 @@ class StepformController1 {
     }
   };
 
-  static getData_1= async(req,res)=>{
+  static getData_1 = async (req, res) => {
+    // if (mongoose.Types.ObjectId.isValid(id)) {
+    //     return res.status(400).json({ error: 'Invalid ID' });
+    //   }
+    // const {id,email}= req.params
     try {
-      const data = await Stepform1.findById('640a2e4667626f8a8d450fae')
-      console.log(data);
-      res.send(data)
+      const user = await Stepform1.findById(req.params.id);
+      console.log(user);
+      if (!user) {
+        return res.status(404).send("User not found");
+      }
+      res.status(200).json(user);
     } catch (error) {
-      console.log(error.message);
+      console.error(error);
+      res.status(500).send("Error fetching user data");
     }
-  }
+  };
 }
 
 module.exports = StepformController1;

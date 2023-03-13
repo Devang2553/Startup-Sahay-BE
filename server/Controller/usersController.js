@@ -114,6 +114,9 @@ class UserController {
       res.status(500).send("Error fetching user data");
     }
   };
+
+
+ 
 }
 
 module.exports = UserController;
